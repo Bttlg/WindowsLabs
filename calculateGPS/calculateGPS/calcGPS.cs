@@ -14,6 +14,9 @@ namespace calculateGPS
         public byte head = 0x40;
         public byte[] tail = new byte[2] {0x0d, 0x0a};
         public ushort length;
+        public byte[] CRCcode;
+        public byte[] UnitCode;
+        public byte[] eventData;
 
        public calcGPS()
         {
@@ -30,21 +33,28 @@ namespace calculateGPS
             {
                 Console.WriteLine("Packet bish");
             }
-           //Console.WriteLine(calculateCRC.CRC16(rawData));
         }
-        
         public bool checkPacket()
         {
             for (int i = 0; i + 1 < rawData.Length; i++)
             {
                 if (head == rawData[i] && head == rawData[i + 1])
                 {
-                    if (i + 4 < rawData.Length && BitConverter.ToUInt16(rawData[(i + 2)..(i + 4)]) < 1024)
+                    if (i + 4 < rawData.Length && BitConverter.ToUInt16(rawData[(i + 2)..(i + 4)]) < 1024 && BitConverter.ToUInt16(rawData[(i + 2)..(i + 4)]) <= rawData.Length - i)
                     {
+                        
                         length = BitConverter.ToUInt16(rawData[(i + 2)..(i + 4)]);
-                        Console.WriteLine(length);
-                        return true;
+                        if(tail[0] == rawData[length - 2] && tail[1] == rawData[length - 1])
+                        {
+                            byte[] CRC = rawData[i..^4];
+                            ushort CRCresult = calculateCRC.CRC16(CRC);
+                            if(BitConverter.ToUInt16(rawData[^4..^2]) == CRCresult && length - 8 >= 14){
+                                    
+                                    return true;
+                            }
+                        }
                     }
+                    break;
                 }
             }
             return false;

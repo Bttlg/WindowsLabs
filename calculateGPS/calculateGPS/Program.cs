@@ -1,4 +1,5 @@
 ﻿using calculateGPS;
 
-calcGPS example = new calcGPS();
-example.calculatePacket();
+//Үндсэн программ ажиллуулах хэсэг
+calcGPS GPSCHECK = new calcGPS();
+GPSCHECK.calculatePacket();

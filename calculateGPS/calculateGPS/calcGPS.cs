@@ -1,5 +1,6 @@
 ﻿
 using System.Text;
+using calculateGPS.calculateData;
 
 namespace calculateGPS
 {
@@ -11,30 +12,30 @@ namespace calculateGPS
             0x40, 0x40,0x56, 0x00, 0x32, 0x47, 0x51, 0x2d, 0x31, 0x36, 0x30, 0x31, 0x30, 0x36,0x33, 0x38,0x01, 0x10,0x06,
             0x0a,0x13, 0x0a,0x2a, 0x08,0x0f, 0x3e,0x40, 0x44, 0x0a, 0x70,0x89, 0xe6,0x16, 0xcf,0x00, 0x50,0x04, 0xd0,0x31,
             0x01,0x01, 0x05,0x05, 0x05,0x00, 0x06,0x00, 0x01,0x01, 0x00,0x00, 0x18,0xa5, 0xa6,0xa7, 0xa8,0xa9, 0xaa,
-            0xf2, 0xad,0xae, 0xaf,0xb0, 0xb1,0x61, 0x62,0x63, 0x64,0x65, 0x66,0x67, 0x68,0x69, 0x6a,0x6b, 0x6c,0x06, 
+            0xf2, 0xad,0xae, 0xaf,0xb0, 0xb1,0x61, 0x62,0x63, 0x64,0x65, 0x66,0x67, 0x68,0x69, 0x6a,0x6b, 0x6c,0x06,
             0x0a, 0x13, 0x0a,0x2a, 0x07,0x53, 0xe8,0x0d, 0x0a
         };
 
         //Ашиглагдах хувьсагчууд
         public byte[] head = new byte[2] { 0x40, 0x40 };
-        public byte[] tail = new byte[2] {0x0d, 0x0a};
+        public byte[] tail = new byte[2] { 0x0d, 0x0a };
         public ushort length;
         public byte[] UnitCode = new byte[2];
         public byte[] EventCode = new byte[2];
-        public byte[] EventData = new byte[2];
+        public byte[] EventData;
         public byte[] CRCcode = new byte[2];
         public int index;
 
         //Байгуулагч функц
        public calcGPS()
         {
-
+            
         }
 
         //Packet мөн, биш үед хариу үйлдэл үзүүлэх method
         public void calculatePacket()
         {
-           
+            Console.WriteLine("Packet-iig shalgaj baina...");
             //Хэрвээ packet мөн бол утгуудаа хадгалж авна
             if (checkPacket())
             {
@@ -43,6 +44,7 @@ namespace calculateGPS
                 EventData = rawData[(index + 18)..^4];
                 CRCcode = rawData[^4..^2];
                 printInfo();
+                checkPacketType();
             }
             else
             {
@@ -65,7 +67,7 @@ namespace calculateGPS
                     {
                         //Уртыг нь нэг хувьсагчид хадгалаж авах бөгөөд tail-ийг хайна.
                         length = BitConverter.ToUInt16(rawData[(i + 2)..(i + 4)]);
-                        if(tail[0] == rawData[length - 2] && tail[1] == rawData[length - 1])
+                        if(tail[0] == rawData[length - 2] && tail[1] == rawData[length - 1]) 
                         {
                             //Хэрвээ tail оршин байвал CRC-аа шалгаснаар packet мөн, биш нь шийдэгдэх болно.
                             byte[] crc = rawData[i..^4];
@@ -84,6 +86,38 @@ namespace calculateGPS
             return false;
         }
 
+        //Ямар төрлийн data вэ? гэдгийг нь шалгаад тохирсон классруу нь eventData дамжуулна...
+        public void checkPacketType()
+        {
+            uint eventIntCode = BitConverter.ToUInt16(this.EventCode);
+            Console.WriteLine(eventIntCode);
+            switch (eventIntCode) {
+                case 4097:
+                    Console.WriteLine("\n1001/9001 - Login Data");
+                    loginData loginCalc = new loginData();
+                    loginCalc.calculateLoginData(EventData);
+                    break;
+                case 4099:
+                    Console.WriteLine("\n1003/9003 - Maintenance Data");
+                    Maintenance maintenanceCalc = new Maintenance();
+                    maintenanceCalc.calculateMaintenanceData(EventData);
+                    break;
+                case 8193:
+                    Comprehensive comprehensiveCalc = new Comprehensive();
+                    comprehensiveCalc.calculateCompData(EventData);
+                    break;
+                case 8194:
+                    Comprehensive comprehensiveCalc1 = new Comprehensive();
+                    comprehensiveCalc1.calculateCompData(EventData);
+                    break;
+                case 8196:
+                    Console.WriteLine("\n2004 - SleepModeFixedUpload Packet");
+                    break;
+                default:
+                    break;
+            }
+        }
+
         //Packet мөн бол хадгалж авсан утгуудаа хэвлэх method
         public void printInfo()
         {
@@ -97,3 +131,6 @@ namespace calculateGPS
         }
     }
 }
+
+
+// rawLength = 500; packet = 200-300 100 length 200 + 2...200+4

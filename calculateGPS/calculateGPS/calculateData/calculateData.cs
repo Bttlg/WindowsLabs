@@ -10,6 +10,7 @@ namespace calculateGPS.calculateData
         public ushort speed, course;
         public int high;
         
+        
         public string UTC_TIME_CALC(byte[] time)
         {
             int day, month, year, hour, minute, second;
@@ -89,12 +90,6 @@ namespace calculateGPS.calculateData
                 }
             }
             return false;
-        }
-
-        public void print_GPS_INFO()
-        {
-            Console.WriteLine("\nstatus: " + status + "\nlatitude: " + latitude + "\nlongitude: "
-                + longitude + "\nspeed: " + speed + "\ncourse: " + course + "\nhigh: " + high);
         }
     }
 }

@@ -6,7 +6,6 @@ namespace calculateGPS
 {
     internal class calcGPS
     {
-
         //Жишээ packet
         public byte[] rawData = new byte[]{
             0x40, 0x40,0x56, 0x00, 0x32, 0x47, 0x51, 0x2d, 0x31, 0x36, 0x30, 0x31, 0x30, 0x36,0x33, 0x38,0x01, 0x10,0x06,
@@ -70,7 +69,7 @@ namespace calculateGPS
                         if(tail[0] == rawData[length - 2] && tail[1] == rawData[length - 1]) 
                         {
                             //Хэрвээ tail оршин байвал CRC-аа шалгаснаар packet мөн, биш нь шийдэгдэх болно.
-                            byte[] crc = rawData[i..^4];
+                            byte[] crc = rawData[i..(length - 4)];
                             ushort CRCresult = calculateCRC.CRC16(crc);
                             if(BitConverter.ToUInt16(rawData[^4..^2]) == CRCresult && length - 8 >= 14){
                                 index = i;

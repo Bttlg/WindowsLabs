@@ -8,6 +8,7 @@ namespace calculateGPS.calculateData
 {
     internal class Comprehensive: calculateData
     {
+        public byte[] dataSwitch = new byte[3];
         public Comprehensive()
         {
 
@@ -33,6 +34,7 @@ namespace calculateGPS.calculateData
                 Console.WriteLine("Historical Supplement: ");
                 if (GPS_INFO_CALC(eventData[11..32]))
                 {
+                    dataSwitch = eventData[32..35];
                     print_GPS_INFO();
                 }
                 else
@@ -41,6 +43,12 @@ namespace calculateGPS.calculateData
                 }
             }
                
+        }
+        public void print_GPS_INFO()
+        {
+            
+            Console.WriteLine("\nstatus: " + status + "\nlatitude: " + latitude + "\nlongitude: "
+                + longitude + "\nspeed: " + speed + "\ncourse: " + course + "\nhigh: " + high);
         }
     }
 }

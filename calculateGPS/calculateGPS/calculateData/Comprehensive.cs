@@ -9,6 +9,7 @@ namespace calculateGPS.calculateData
     internal class Comprehensive: eventData
     {
         public byte[] dataSwitch = new byte[3];
+        GPS_INFO gpsInfo;
         public Comprehensive()
         {
 
@@ -42,14 +43,8 @@ namespace calculateGPS.calculateData
                     Console.WriteLine("Aldaatai Eventdata baina...");
                 }
             }
-               
         }
-        public void print_GPS_INFO()
-        {
-            
-            Console.WriteLine("\nstatus: " + status + "\nlatitude: " + latitude + "\nlongitude: "
-                + longitude + "\nspeed: " + speed + "\ncourse: " + course + "\nhigh: " + high);
-        }
+        
     }
 }
  

@@ -30,10 +30,6 @@ namespace calculateGPS.calculateData
             }
         }
 
-        public void print_GPS_INFO()
-        {
-            Console.WriteLine("\nstatus: " + status + "\nlatitude: " + latitude + "\nlongitude: "
-                + longitude + "\nspeed: " + speed + "\ncourse: " + course + "\nhigh: " + high);
-        }
+        
     }
 }

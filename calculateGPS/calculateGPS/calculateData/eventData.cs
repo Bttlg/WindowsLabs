@@ -6,11 +6,12 @@ namespace calculateGPS.calculateData
     {
         public string monthText;
         public string UTC_TIME_TEXT;
-        public uint status, latitude, longitude;
-        public ushort speed, course;
-        public int high;
-        
-        
+        uint status, latitude, longitude;
+        ushort speed, course;
+        int high;
+        GPS_INFO gpsInfo;
+
+
         public string UTC_TIME_CALC(byte[] time)
         {
             int day, month, year, hour, minute, second;
@@ -83,6 +84,7 @@ namespace calculateGPS.calculateData
                             high = BitConverter.ToInt16(GPS_DATA[19..22]);
                             if (high >= -32768 && high <= 32767)
                             {
+                                gpsInfo = new GPS_INFO(status, latitude, longitude, speed, course, high);
                                 return true;
                             }
                         }
@@ -90,6 +92,12 @@ namespace calculateGPS.calculateData
                 }
             }
             return false;
+        }
+
+        public void print_GPS_INFO()
+        {
+            Console.WriteLine("\nstatus: " + gpsInfo.status + "\nlatitude: " + gpsInfo.latitude + "\nlongitude: "
+                + gpsInfo.longitude + "\nspeed: " + gpsInfo.speed + "\ncourse: " + gpsInfo.course + "\nhigh: " + gpsInfo.high);
         }
     }
 }

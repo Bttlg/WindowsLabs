@@ -26,8 +26,7 @@ namespace calculateGPS.calculateData
                     obdModule = eventData[23..27];
                     unitFirm = eventData[27..31];
                     unitHard = eventData[31..35];
-                    
-                    print_GPS_INFO();
+                    print_LOGINGPS_INFO();
                 }
                 else
                 {
@@ -36,13 +35,12 @@ namespace calculateGPS.calculateData
             }
         }
 
-        public void print_GPS_INFO()
+        public void print_LOGINGPS_INFO()
         {
             Console.WriteLine("OBD module version: " + BitConverter.ToString(obdModule).Replace("-", ""));
             Console.WriteLine("UNIT firmware version: " + BitConverter.ToString(unitFirm).Replace("-", ""));
             Console.WriteLine("UNIT hardware version: " + BitConverter.ToString(unitHard).Replace("-", ""));
-            Console.WriteLine("\nstatus: " + status + "\nlatitude: " + latitude + "\nlongitude: "
-                + longitude + "\nspeed: " + speed + "\ncourse: " + course + "\nhigh: " + high);
+            print_GPS_INFO();
         }
     }
 }

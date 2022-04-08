@@ -98,8 +98,7 @@ namespace calculateGPS
                     break;
                 case 4099:
                     Console.WriteLine("\n1003/9003 - Maintenance Data");
-                    Maintenance maintenanceCalc = new Maintenance();
-                    maintenanceCalc.calculateMaintenanceData(EventData);
+                    Console.WriteLine("9003 butsaalaa...");
                     break;
                 case 8193:
                     Comprehensive comprehensiveCalc = new Comprehensive();

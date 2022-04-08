@@ -7,7 +7,7 @@ using calculateGPS;
 
 namespace calculateGPS.calculateData 
 {
-    internal class loginData : calculateData
+    internal class loginData : eventData
     {
         public byte[] obdModule = new byte[4];
         public byte[] unitFirm = new byte[4];

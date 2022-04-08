@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace calculateGPS.calculateData
 {
-    internal class SMFU: calculateData
+    internal class SMFU: eventData
     {
         public SMFU()
         {

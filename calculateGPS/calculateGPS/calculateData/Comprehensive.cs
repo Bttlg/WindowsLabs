@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace calculateGPS.calculateData
 {
-    internal class Comprehensive: calculateData
+    internal class Comprehensive: eventData
     {
         public byte[] dataSwitch = new byte[3];
         public Comprehensive()
@@ -52,3 +52,4 @@ namespace calculateGPS.calculateData
         }
     }
 }
+ 

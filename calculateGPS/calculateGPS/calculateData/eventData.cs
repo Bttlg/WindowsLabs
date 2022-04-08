@@ -2,7 +2,7 @@
 
 namespace calculateGPS.calculateData
 {
-    public abstract class calculateData
+    public abstract class eventData
     {
         public string monthText;
         public string UTC_TIME_TEXT;

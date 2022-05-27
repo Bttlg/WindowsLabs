@@ -1,4 +1,5 @@
 ﻿
+using GPSlibrary.exception;
 
 namespace calculateGPS.calculateData
 {
@@ -21,6 +22,10 @@ namespace calculateGPS.calculateData
             year = 2000 + unchecked((int)time[2]);
             month = unchecked((int)time[1]);
             day = unchecked((int)time[0]);
+            if(month > 12)
+            {
+                throw new NullMonthException("UTC_TIME алдаатай байна.");
+            }
             switch (month) {
                 case 1:
                     monthText = "Jan";

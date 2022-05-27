@@ -1,6 +1,8 @@
 ﻿
-using System.Text;
 using calculateGPS.calculateData;
+using GPSlibrary.exception;
+
+
 
 namespace GPSlibrary
 {
@@ -21,42 +23,30 @@ namespace GPSlibrary
         //Байгуулагч функц
        public calcGPS(byte[] rawData)
         {
-            if (calculatePacket(rawData) == "ErrorPacket")
-            {
-                throw new IndexOutOfRangeException();
-            }
-        }
-
-        //Packet мөн, биш үед хариу үйлдэл үзүүлэх method
-        public string calculatePacket(byte[] rawData)
-        {
             //Хэрвээ packet мөн бол утгуудаа хадгалж авна
             if (checkPacket(rawData))
             {
                 UnitCode = rawData[(index + 4)..(index + 16)];
-                EventCode = BitConverter.ToUInt16(rawData[(index + 16)..(index + 18)]); 
+                EventCode = BitConverter.ToUInt16(rawData[(index + 16)..(index + 18)]);
                 EventData = rawData[(index + 18)..^4];
                 CRCcode = rawData[^4..^2];
                 printInfo();
                 checkPacketType();
-                return "success";
-            }
-            else
-            {
-                //Харин эсрэг тохиолдолд үүнийг хэвлэнэ
-                return "ErrorPacket";
             }
         }
+
 
         //Packet мөн эсэхийг шалгах method. Мөн бол true, үгүй бол false утга буцаана.
         public bool checkPacket(byte[] rawData)
         {
+            bool checkHead = false;
             //Орж ирсэн packet дээр давталт гүйнэ.
             for (int i = 0; i + 1 < rawData.Length; i++)
             {
                 //Head-ийг хайж байна.
                 if (head[0] == rawData[i] && head[1] == rawData[i + 1])
                 {
+                    checkHead = false;
                     //Head олдчихвол уртыг нь олж аваад өгөгдлийн уртаас болон 1024-өөс бага эсэхийг шалгана. Мөн урт нь үлдсэн датаны хэмжээнээс бага эсэхийг шалгана(Их байвал packet оршин байхгүй.).
                     if (i + 4 < rawData.Length && BitConverter.ToUInt16(rawData[(i + 2)..(i + 4)]) < 1024 && BitConverter.ToUInt16(rawData[(i + 2)..(i + 4)]) <= rawData.Length - i)
                     {
@@ -71,12 +61,19 @@ namespace GPSlibrary
                                 index = i;
                                 return true;
                             }
+                            throw new WrongCRCException("CRC код буруу байна");
+                            
                         }
+                        throw new NullTailException("Tail олдсонгүй");
                     }
-                    break;
+                    throw new LongLengthException("Length алдаатай байна.");
                 }
+                checkHead = true;
             }
-
+            if (checkHead)
+            {
+                throw new NullHeadException("Head олдсонгүй");
+            }
             //Packet биш бол мэдээж false утга буцааж байна.
             return false;
         }

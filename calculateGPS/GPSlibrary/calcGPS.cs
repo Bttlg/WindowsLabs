@@ -80,8 +80,7 @@ namespace GPSlibrary
 
         //Ямар төрлийн data вэ? гэдгийг нь шалгаад тохирсон классруу нь eventData дамжуулна...
         public void checkPacketType()
-        {
-            
+        {   
             Console.WriteLine(this.EventCode);
             switch (this.EventCode) {
                 case 4097:
@@ -95,11 +94,12 @@ namespace GPSlibrary
                     break;
                 case 8193:
                     Comprehensive comprehensiveCalc = new Comprehensive();
-                    comprehensiveCalc.calculateCompData(EventData);
+                    comprehensiveCalc.calculateCompData(EventCode, EventData);
                     break;
                 case 8194:
+                    Console.WriteLine("Comprehensive data");
                     Comprehensive comprehensiveCalc1 = new Comprehensive();
-                    comprehensiveCalc1.calculateCompData(EventData);
+                    comprehensiveCalc1.calculateCompData(EventCode, EventData);
                     break;
                 case 8196:
                     Console.WriteLine("\n2004 - SleepModeFixedUpload Packet");

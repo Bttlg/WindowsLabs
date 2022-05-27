@@ -9,16 +9,16 @@
         {
 
         }
-        public void calculateCompData(byte[] eventData)
+        public void calculateCompData(ushort checkCode ,byte[] eventData)
         {
-            uint checkCode = BitConverter.ToUInt16(eventData[0..2]);
-            Console.WriteLine("Event_DATA_UTC_TIME: " + UTC_TIME_CALC(eventData[2..7]));
+            Console.WriteLine("Event_DATA_UTC_TIME: " + UTC_TIME_CALC(eventData[0..6]));
+           
             if (checkCode == 8193)
             {
                 Console.WriteLine("Realtime Upload: ");
-                if (GPS_INFO_CALC(eventData[11..32]))
+                dataSwitch = eventData[6..9];
+                if (GPS_INFO_CALC(eventData[9..30]))
                 {
-                    dataSwitch = eventData[32..35];
                     print_GPS_INFO();
                 }
                 else
@@ -29,10 +29,10 @@
             else
             {
                 Console.WriteLine("Historical Supplement: ");
-                dataSwitch = eventData[11..13];
-                if (GPS_INFO_CALC(eventData[13..34]))
+                dataSwitch = eventData[6..9];
+                if (GPS_INFO_CALC(eventData[9..30]))
                 {
-                    calculate_obdData(eventData[34..eventData.Length]);
+                    //calculate_obdData(eventData[30..eventData.Length]);
                     print_GPS_INFO();
                 }
                 else

@@ -8,21 +8,22 @@ using GPSlibrary.exception;
 
 namespace calculateGPS.calculateData 
 {
-    internal class loginData : eventData
+    internal class loginData 
     {
         public byte[] obdModule = new byte[4];
         public byte[] unitFirm = new byte[4];
         public byte[] unitHard = new byte[4];
-        public loginData()
+        eventData objEventData;
+        public loginData(eventData param)
         {
-
+            this.objEventData = param;
         }
         public void calculateLoginData(byte[] eventData)
         {
             if(eventData.Length >= 44)
             {
-                Console.WriteLine("Event_DATA_UTC_TIME: " + UTC_TIME_CALC(eventData[^6..(eventData.Length)]));
-                if (GPS_INFO_CALC(eventData[2..23]))
+                Console.WriteLine("Event_DATA_UTC_TIME: " + objEventData.UTC_TIME_CALC(eventData[^6..(eventData.Length)]));
+                if (objEventData.GPS_INFO_CALC(eventData[2..23]))
                 {
                     obdModule = eventData[23..27];
                     unitFirm = eventData[27..31];
@@ -41,7 +42,7 @@ namespace calculateGPS.calculateData
             Console.WriteLine("OBD module version: " + BitConverter.ToString(obdModule).Replace("-", ""));
             Console.WriteLine("UNIT firmware version: " + BitConverter.ToString(unitFirm).Replace("-", ""));
             Console.WriteLine("UNIT hardware version: " + BitConverter.ToString(unitHard).Replace("-", ""));
-            print_GPS_INFO();
+            objEventData.print_GPS_INFO();
         }
     }
 }

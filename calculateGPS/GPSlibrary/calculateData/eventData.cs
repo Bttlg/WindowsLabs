@@ -3,15 +3,15 @@ using GPSlibrary.exception;
 
 namespace calculateGPS.calculateData
 {
-    public abstract class eventData
+    public class eventData
     {
-        public string monthText;
-        public string UTC_TIME_TEXT;
-        uint status, latitude, longitude;
-        ushort speed, course;
-        int high;
-        GPS_INFO gpsInfo;
+        public string monthText = "Jan";
+        public string UTC_TIME_TEXT = "";
+        public uint status, latitude, longitude;
+        public ushort speed, course;
+        public int high;
 
+        public eventData() { }
 
         public string UTC_TIME_CALC(byte[] time)
         {
@@ -96,7 +96,6 @@ namespace calculateGPS.calculateData
                             
                             if (high >= -32768 && high <= 32767)
                             {
-                                gpsInfo = new GPS_INFO(status, latitude, longitude, speed, course, high);
                                 return true;
                             }
                         }
@@ -108,8 +107,9 @@ namespace calculateGPS.calculateData
 
         public void print_GPS_INFO()
         {
-            Console.WriteLine("\nstatus: " + gpsInfo.status + "\nlatitude: " + gpsInfo.latitude + "\nlongitude: "
-                + gpsInfo.longitude + "\nspeed: " + gpsInfo.speed + "\ncourse: " + gpsInfo.course + "\nhigh: " + gpsInfo.high);
+            Console.WriteLine("\nstatus: " + status + "\nlatitude: " + latitude + "\nlongitude: "
+                + longitude + "\nspeed: " + speed + "\ncourse: " + course + "\nhigh: " + high);
+            
         }
     }
 }

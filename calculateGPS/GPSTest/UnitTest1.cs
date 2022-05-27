@@ -151,7 +151,7 @@ namespace GPSTest
             try
             {
                 var gpsObj = new calcGPS(rawData);
-                Assert.AreEqual(gpsObj.EventCode, 0x1001);
+                Assert.AreEqual(gpsObj.head, 0x1001);
             }
             catch (Exception ex)
             {
@@ -160,6 +160,4 @@ namespace GPSTest
             }
         }
     }
-
-
 }

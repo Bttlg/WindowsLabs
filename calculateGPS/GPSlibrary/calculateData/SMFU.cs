@@ -6,22 +6,23 @@ using System.Threading.Tasks;
 
 namespace calculateGPS.calculateData
 {
-    internal class SMFU: eventData
+    internal class SMFU
     {
-        public SMFU()
+        eventData objEventData;
+        public SMFU(eventData param)
         {
-
+            this.objEventData = param;
         }
 
         public void calculateSMFUdata(byte[] eventData)
         {
             uint checkCode = BitConverter.ToUInt16(eventData[0..2]);
-            Console.WriteLine("Event_DATA_UTC_TIME: " + UTC_TIME_CALC(eventData[2..7]));
+            Console.WriteLine("Event_DATA_UTC_TIME: " + objEventData.UTC_TIME_CALC(eventData[2..7]));
             if(checkCode == 8196)
             {
-                if (GPS_INFO_CALC(eventData[8..29]))
+                if (objEventData.GPS_INFO_CALC(eventData[8..29]))
                 {
-                    print_GPS_INFO();
+                    objEventData.print_GPS_INFO();
                 }
                 else
                 {

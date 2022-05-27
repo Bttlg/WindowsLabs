@@ -1,25 +1,25 @@
 ﻿namespace calculateGPS.calculateData
 {
-    internal class Comprehensive : eventData
+    internal class Comprehensive
     {
         public byte[] dataSwitch = new byte[3];
         public byte[] obdData = new byte[55];
-        GPS_INFO gpsInfo;
-        public Comprehensive()
+        eventData objEventData;
+        public Comprehensive(eventData param)
         {
-
+            this.objEventData = param;
         }
         public void calculateCompData(ushort checkCode ,byte[] eventData)
         {
-            Console.WriteLine("Event_DATA_UTC_TIME: " + UTC_TIME_CALC(eventData[0..6]));
+            Console.WriteLine("Event_DATA_UTC_TIME: " + objEventData.UTC_TIME_CALC(eventData[0..6]));
            
             if (checkCode == 8193)
             {
                 Console.WriteLine("Realtime Upload: ");
                 dataSwitch = eventData[6..9];
-                if (GPS_INFO_CALC(eventData[9..30]))
+                if (objEventData.GPS_INFO_CALC(eventData[9..30]))
                 {
-                    print_GPS_INFO();
+                    objEventData.print_GPS_INFO();
                 }
                 else
                 {
@@ -30,10 +30,10 @@
             {
                 Console.WriteLine("Historical Supplement: ");
                 dataSwitch = eventData[6..9];
-                if (GPS_INFO_CALC(eventData[9..30]))
+                if (objEventData.GPS_INFO_CALC(eventData[9..30]))
                 {
                     //calculate_obdData(eventData[30..eventData.Length]);
-                    print_GPS_INFO();
+                    objEventData.print_GPS_INFO();
                 }
                 else
                 {

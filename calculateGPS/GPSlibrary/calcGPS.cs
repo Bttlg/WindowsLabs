@@ -8,9 +8,8 @@ namespace GPSlibrary
 {
     public class calcGPS
     {
-        //Жишээ packet
-
         //Ашиглагдах хувьсагчууд
+        public eventData objEventData = new eventData();
         public byte[] head = new byte[2] { 0x40, 0x40 };
         public byte[] tail = new byte[2] { 0x0d, 0x0a };
         public ushort length;
@@ -18,10 +17,11 @@ namespace GPSlibrary
         public ushort EventCode;
         public byte[] EventData;
         public byte[] CRCcode = new byte[2];
-        public int index;
-
+        int index;
+        
+        
         //Байгуулагч функц
-       public calcGPS(byte[] rawData)
+        public calcGPS(byte[] rawData)
         {
             //Хэрвээ packet мөн бол утгуудаа хадгалж авна
             if (checkPacket(rawData))
@@ -32,6 +32,7 @@ namespace GPSlibrary
                 CRCcode = rawData[^4..^2];
                 printInfo();
                 checkPacketType();
+                
             }
         }
 
@@ -85,7 +86,7 @@ namespace GPSlibrary
             switch (this.EventCode) {
                 case 4097:
                     Console.WriteLine("\n1001/9001 - Login Data");
-                    loginData loginCalc = new loginData();
+                    loginData loginCalc = new loginData(objEventData);
                     loginCalc.calculateLoginData(EventData);
                     break;
                 case 4099:
@@ -93,12 +94,12 @@ namespace GPSlibrary
                     Console.WriteLine("9003 butsaalaa...");
                     break;
                 case 8193:
-                    Comprehensive comprehensiveCalc = new Comprehensive();
+                    Comprehensive comprehensiveCalc = new Comprehensive(objEventData);
                     comprehensiveCalc.calculateCompData(EventCode, EventData);
                     break;
                 case 8194:
                     Console.WriteLine("Comprehensive data");
-                    Comprehensive comprehensiveCalc1 = new Comprehensive();
+                    Comprehensive comprehensiveCalc1 = new Comprehensive(objEventData);
                     comprehensiveCalc1.calculateCompData(EventCode, EventData);
                     break;
                 case 8196:
@@ -119,6 +120,7 @@ namespace GPSlibrary
             Console.WriteLine("EventData: " + BitConverter.ToString(EventData).Replace("-", ""));
             Console.WriteLine("CRC: " + BitConverter.ToString(CRCcode).Replace("-", ""));
             Console.WriteLine("tail: " + BitConverter.ToString(tail).Replace("-", ""));
+            
         }
     }
 }

@@ -23,11 +23,11 @@ namespace calculateGPS.calculateData
             if(eventData.Length >= 44)
             {
                 Console.WriteLine("Event_DATA_UTC_TIME: " + objEventData.UTC_TIME_CALC(eventData[^6..(eventData.Length)]));
-                if (objEventData.GPS_INFO_CALC(eventData[2..23]))
+                if (objEventData.GPS_INFO_CALC(eventData[0..21]))
                 {
-                    obdModule = eventData[23..27];
-                    unitFirm = eventData[27..31];
-                    unitHard = eventData[31..35];
+                    obdModule = eventData[21..25];
+                    unitFirm = eventData[25..29];
+                    unitHard = eventData[29..33];
                     print_LOGINGPS_INFO();
                 }
                 else

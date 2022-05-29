@@ -94,6 +94,7 @@ namespace GPSlibrary
                     Console.WriteLine("9003 butsaalaa...");
                     break;
                 case 8193:
+                    Console.WriteLine("Comprehensive data");
                     Comprehensive comprehensiveCalc = new Comprehensive(objEventData);
                     comprehensiveCalc.calculateCompData(EventCode, EventData);
                     break;
@@ -104,6 +105,8 @@ namespace GPSlibrary
                     break;
                 case 8196:
                     Console.WriteLine("\n2004 - SleepModeFixedUpload Packet");
+                    SMFU smfu = new SMFU(objEventData);
+                    smfu.calculateSMFUdata(EventCode, EventData);
                     break;
                 default:
                     break;

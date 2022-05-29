@@ -14,13 +14,12 @@ namespace calculateGPS.calculateData
             this.objEventData = param;
         }
 
-        public void calculateSMFUdata(byte[] eventData)
+        public void calculateSMFUdata(ushort checkCode, byte[] eventData)
         {
-            uint checkCode = BitConverter.ToUInt16(eventData[0..2]);
-            Console.WriteLine("Event_DATA_UTC_TIME: " + objEventData.UTC_TIME_CALC(eventData[2..7]));
+            Console.WriteLine("Event_DATA_RTC_TIME: " + objEventData.UTC_TIME_CALC(eventData[0..6]));
             if(checkCode == 8196)
             {
-                if (objEventData.GPS_INFO_CALC(eventData[8..29]))
+                if (objEventData.GPS_INFO_CALC(eventData[6..27]))
                 {
                     objEventData.print_GPS_INFO();
                 }
@@ -30,7 +29,5 @@ namespace calculateGPS.calculateData
                 }
             }
         }
-
-        
     }
 }

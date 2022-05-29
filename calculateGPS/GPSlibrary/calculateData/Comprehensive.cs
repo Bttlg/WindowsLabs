@@ -9,37 +9,54 @@
         {
             this.objEventData = param;
         }
-        public void calculateCompData(ushort checkCode ,byte[] eventData)
+        public void calculateCompData(ushort checkCode, byte[] eventData)
         {
             Console.WriteLine("Event_DATA_UTC_TIME: " + objEventData.UTC_TIME_CALC(eventData[0..6]));
-           
+
+            //Realtime, Historical гэсэн 2 төрөл байх учир тус тусад нь задална...
+            //8193 - Realtime, 8194 - Historical
             if (checkCode == 8193)
             {
-                Console.WriteLine("Realtime Upload: ");
-                dataSwitch = eventData[6..9];
-                if (objEventData.GPS_INFO_CALC(eventData[9..30]))
-                {
-                    objEventData.print_GPS_INFO();
-                }
-                else
-                {
-                    Console.WriteLine("Aldaatai Eventdata baina...");
-                }
-            }
-            else
+                Console.WriteLine("\nRealtime Upload: ");
+            }else
             {
-                Console.WriteLine("Historical Supplement: ");
+                Console.WriteLine("\nHistorical Upload: ");
+            }
                 dataSwitch = eventData[6..9];
-                if (objEventData.GPS_INFO_CALC(eventData[9..30]))
+
+                //DATA_SWITCH нь eventData-д ямар өгөгдөл байгааг илтгэх учир тус бүрд нь шалгаж байгаа...
+                if (unchecked((int)dataSwitch[0]) == 128)
                 {
-                    //calculate_obdData(eventData[30..eventData.Length]);
-                    objEventData.print_GPS_INFO();
+                    if (objEventData.GPS_INFO_CALC(eventData[9..30]))
+                    {
+                        print_COMPGPS_INFO();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Aldaatai Eventdata baina...");
+                    }
+                }else
+                {
+                    Console.WriteLine("GPS_DATA null...");
+                }
+
+                if(unchecked((int)dataSwitch[1]) == 128)
+                {
+
+                }else
+                {
+                    Console.WriteLine("OBD_DATA null...");
+                }
+
+
+                if (unchecked((int)dataSwitch[2]) == 128)
+                {
+                    
                 }
                 else
                 {
-                    Console.WriteLine("Aldaatai Eventdata baina...");
+                    Console.WriteLine("GSENSOR null...");
                 }
-            }
         }
 
         public byte[] calculate_obdData(byte[] eventData)
@@ -64,7 +81,12 @@
             {
                 return eventData;
             }
+        }
 
+        public void print_COMPGPS_INFO()
+        {
+            Console.WriteLine("data_switch: " + BitConverter.ToString(dataSwitch).Replace("-", ""));
+            objEventData.print_GPS_INFO();
         }
     }
 }

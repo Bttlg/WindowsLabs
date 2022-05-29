@@ -35,4 +35,4 @@ byte[] smfuData = new byte[]{
 
 
 //Үндсэн программ ажиллуулах хэсэг
-calcGPS GPSCHECK = new calcGPS(smfuData);
+calcGPS GPSCHECK = new calcGPS(realtimeData);

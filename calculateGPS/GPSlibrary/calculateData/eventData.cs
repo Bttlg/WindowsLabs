@@ -8,9 +8,11 @@ namespace calculateGPS.calculateData
         //Хэрэгтэй хувьсагчид...
         public string monthText = "Jan";
         public string UTC_TIME_TEXT = "";
-        public uint status, latitude, longitude;
+        public uint status;
+        public double latitude, longitude;
         public ushort speed, course;
         public int high;
+        public int day, month, year, hour, minute, second;
 
         public eventData() { }
 
@@ -19,7 +21,6 @@ namespace calculateGPS.calculateData
         {
             //Орж ирсэн датанаас зохих2 байрлалын утгыг хөрвүүлэн авч байна...
             //Console.WriteLine("check: " + BitConverter.ToString(time).Replace("-", "") + " , urt : " + time.Length);
-            int day, month, year, hour, minute, second;
             second = unchecked((int)time[5]);
             minute = unchecked((int)time[4]);
             hour = unchecked((int)time[3]); ;
@@ -86,28 +87,30 @@ namespace calculateGPS.calculateData
             //Хэрвээ интервалаас хальсан асуудал гарах юм бол false утга буцаан цааш пакетыг задлах үйл явцыг үүгээр дуусгавар болгоно...
             if (status >= 0)
             {
-                latitude = BitConverter.ToUInt32(GPS_DATA[7..11]);
-                longitude = BitConverter.ToUInt32(GPS_DATA[11..15]);
+                latitude = (double)BitConverter.ToUInt32(GPS_DATA[7..11]) / 3600000;
+                longitude = (double)BitConverter.ToUInt32(GPS_DATA[11..15]) / 3600000;
                 
                 if (latitude >= 0 && latitude <= 90 * 3600000 && longitude >= 0 && longitude <= 180 * 3600000)
                 {
                     speed = BitConverter.ToUInt16(GPS_DATA[15..17]);
-                    
                     if (speed >= 0 && speed <= 65535)
                     {
                         course = BitConverter.ToUInt16(GPS_DATA[17..19]);
                         if (course >= 0 && course <= 3599)
                         {
+
                             high = BitConverter.ToInt16(GPS_DATA[19..21]);
-                            
                             if (high >= -32768 && high <= 32767)
                             {
                                 return true;
                             }
                         }
+                        throw new TooMuchHighException("course hetersen baina...");
                     }
+                    throw new TooMuchHighException("speed hetersen baina...");
                 }
             }
+            throw new TooMuchHighException("status 0-ees baga baina...") ;
             return false;
         }
 

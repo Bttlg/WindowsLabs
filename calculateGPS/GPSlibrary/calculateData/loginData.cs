@@ -8,7 +8,7 @@ using GPSlibrary.exception;
 
 namespace calculateGPS.calculateData 
 {
-    internal class loginData 
+    public class loginData 
     {
         public byte[] obdModule = new byte[4];
         public byte[] unitFirm = new byte[4];
@@ -18,8 +18,12 @@ namespace calculateGPS.calculateData
         {
             this.objEventData = param;
         }
-        public void calculateLoginData(byte[] eventData)
+        public void calculateLoginData(ushort checkCode, byte[] eventData)
         {
+            if(checkCode != 4097)
+            {
+                throw new WrongUnitCodeException("UnitCode таарахгүй байна...");
+            }
             //Login пакетны хувьд eventData нь доод талдаа 44 уртттай байх ёстой болохоор ингэж тооцож байгаа...
             if(eventData.Length >= 44)
             {

@@ -1,6 +1,8 @@
-﻿namespace calculateGPS.calculateData
+﻿using GPSlibrary.exception;
+
+namespace calculateGPS.calculateData
 {
-    internal class Comprehensive
+    public class Comprehensive
     {
         public byte[] dataSwitch = new byte[3];
         public byte[] obdData = new byte[0];
@@ -22,9 +24,12 @@
             if (checkCode == 8193)
             {
                 Console.WriteLine("\nRealtime Upload: ");
-            } else
+            } else if(checkCode == 8194)
             {
                 Console.WriteLine("\nHistorical Upload: ");
+            }else
+            {
+                throw new WrongUnitCodeException("UnitCode таарахгүй байна...");
             }
             dataSwitch = eventData[6..9];
 
@@ -54,6 +59,8 @@
             {
                 Console.WriteLine("OBD_DATA null...");
             }
+
+            //Үлдсэн датаны урт нь өмнөх датанууд байх эсэхээс хамаарч өөрчлөгдөнө...
             if (unchecked((int)dataSwitch[1]) == 128)
             {
                 int length = 30 + obdData.Length;
@@ -112,7 +119,7 @@
             }
             else
             {
-                Console.WriteLine("obd data length too long");
+                throw new LongLengthException("OBDDATA 10-аас дээш блоктой байна...");
             }
         }
 

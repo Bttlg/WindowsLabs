@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GPSlibrary.exception;
 
 namespace calculateGPS.calculateData
 {
-    internal class SMFU
+    public class SMFU
     {
         eventData objEventData;
         public SMFU(eventData param)
@@ -27,6 +28,9 @@ namespace calculateGPS.calculateData
                 {
                     Console.WriteLine("Aldaatai Eventdata baina...");
                 }
+            }else
+            {
+                throw new WrongUnitCodeException("UnitCode таарахгүй байна...");
             }
         }
     }

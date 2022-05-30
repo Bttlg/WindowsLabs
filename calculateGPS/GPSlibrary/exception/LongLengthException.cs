@@ -2,18 +2,18 @@
 
 namespace GPSlibrary.exception
 {
-    public class LongLengthException : Exception
+    public class TooMuchHighException : Exception
     {
-        public LongLengthException()
+        public TooMuchHighException()
         {
         }
 
-        public LongLengthException(string message)
+        public TooMuchHighException(string message)
             : base(message)
         {
         }
 
-        public LongLengthException(string message, Exception inner)
+        public TooMuchHighException(string message, Exception inner)
             : base(message, inner)
         {
         }

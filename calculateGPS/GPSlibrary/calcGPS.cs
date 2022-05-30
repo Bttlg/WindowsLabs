@@ -32,7 +32,6 @@ namespace GPSlibrary
                 CRCcode = rawData[^4..^2];
                 printInfo();
                 checkPacketType();
-                
             }
         }
 
@@ -87,7 +86,7 @@ namespace GPSlibrary
                 case 4097:
                     Console.WriteLine("\n1001/9001 - Login Data");
                     loginData loginCalc = new loginData(objEventData);
-                    loginCalc.calculateLoginData(EventData);
+                    loginCalc.calculateLoginData(EventCode, EventData);
                     break;
                 case 4099:
                     Console.WriteLine("\n1003/9003 - Maintenance Data");
@@ -123,7 +122,6 @@ namespace GPSlibrary
             Console.WriteLine("EventData: " + BitConverter.ToString(EventData).Replace("-", ""));
             Console.WriteLine("CRC: " + BitConverter.ToString(CRCcode).Replace("-", ""));
             Console.WriteLine("tail: " + BitConverter.ToString(tail).Replace("-", ""));
-            
         }
     }
 }

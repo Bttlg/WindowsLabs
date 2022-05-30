@@ -22,11 +22,8 @@ namespace calculateGPS.calculateData
         {
             if(checkCode != 4097)
             {
-                throw new WrongUnitCodeException("UnitCode таарахгүй байна...");
+                throw new WrongUnitCodeException("EventCode таарахгүй байна...");
             }
-            //Login пакетны хувьд eventData нь доод талдаа 44 уртттай байх ёстой болохоор ингэж тооцож байгаа...
-            if(eventData.Length >= 44)
-            {
                 Console.WriteLine("Event_DATA_UTC_TIME: " + objEventData.UTC_TIME_CALC(eventData[^6..(eventData.Length)]));
                 //GPS_INFO нь амжилттай задарчих юм бол true утга буцаах бөгөөд үүний дараа үлдсэн хэсгээ хадгалж авна...
                 if (objEventData.GPS_INFO_CALC(eventData[0..21]))
@@ -36,11 +33,6 @@ namespace calculateGPS.calculateData
                     unitHard = eventData[29..33];
                     print_LOGINGPS_INFO();
                 }
-                else
-                {
-                    Console.WriteLine("Aldaatai Eventdata baina...");
-                }
-            }
         }
 
         public void print_LOGINGPS_INFO()

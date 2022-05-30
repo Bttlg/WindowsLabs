@@ -21,6 +21,10 @@ namespace calculateGPS.calculateData
         {
             //Орж ирсэн датанаас зохих2 байрлалын утгыг хөрвүүлэн авч байна...
             //Console.WriteLine("check: " + BitConverter.ToString(time).Replace("-", "") + " , urt : " + time.Length);
+            if(time.Length != 6)
+            {
+                throw new LongLengthException("UTC_TIME заавал 6 урттай байх шаардлагатай...");
+            }
             second = unchecked((int)time[5]);
             minute = unchecked((int)time[4]);
             hour = unchecked((int)time[3]); ;
@@ -111,7 +115,6 @@ namespace calculateGPS.calculateData
                 }
             }
             throw new TooMuchHighException("status 0-ees baga baina...") ;
-            return false;
         }
 
         public void print_GPS_INFO()

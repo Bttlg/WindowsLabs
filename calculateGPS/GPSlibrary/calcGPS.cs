@@ -32,6 +32,9 @@ namespace GPSlibrary
                 CRCcode = rawData[^4..^2];
                 printInfo();
                 checkPacketType();
+            }else
+            {
+                throw new NullTailException("Алдаатай пакет байна...");
             }
         }
 
@@ -108,7 +111,7 @@ namespace GPSlibrary
                     smfu.calculateSMFUdata(EventCode, EventData);
                     break;
                 default:
-                    break;
+                    throw new WrongUnitCodeException("Тухайн EventCode-той пакетыг задлах боломжгүй...");
             }
         }
 

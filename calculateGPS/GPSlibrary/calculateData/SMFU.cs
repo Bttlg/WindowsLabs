@@ -24,13 +24,9 @@ namespace calculateGPS.calculateData
                 {
                     objEventData.print_GPS_INFO();
                 }
-                else
-                {
-                    Console.WriteLine("Aldaatai Eventdata baina...");
-                }
             }else
             {
-                throw new WrongUnitCodeException("UnitCode таарахгүй байна...");
+                throw new WrongUnitCodeException("EventCode таарахгүй байна...");
             }
         }
     }

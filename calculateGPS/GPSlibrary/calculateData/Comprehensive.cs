@@ -29,35 +29,21 @@ namespace calculateGPS.calculateData
                 Console.WriteLine("\nHistorical Upload: ");
             }else
             {
-                throw new WrongUnitCodeException("UnitCode таарахгүй байна...");
+                throw new WrongUnitCodeException("EventCode таарахгүй байна...");
             }
             dataSwitch = eventData[6..9];
 
             //DATA_SWITCH нь eventData-д ямар өгөгдөл байгааг илтгэх учир тус бүрд нь шалгаж байгаа...
             if (unchecked((int)dataSwitch[0]) == 128)
             {
-                if (objEventData.GPS_INFO_CALC(eventData[9..30]))
-                {
-                    
-                }
-                else
-                {
-                    Console.WriteLine("Aldaatai Eventdata baina...");
-                }
-            } else
-            {
-                Console.WriteLine("GPS_DATA null...");
-            }
+                objEventData.GPS_INFO_CALC(eventData[9..30]);
+            } 
 
             if (unchecked((int)dataSwitch[1]) == 128)
             {
                 //GPS_INFO байх эсэхээс хамаарч OBD_DATA хаанаас нь эхлэнэ тодорхойлогдоно
                 if (unchecked((int)dataSwitch[0]) == 128) calculate_obdData(eventData[30..eventData.Length]);
                 else calculate_obdData(eventData[9..eventData.Length]);
-            }
-            else
-            {
-                Console.WriteLine("OBD_DATA null...");
             }
 
             //Үлдсэн датаны урт нь өмнөх датанууд байх эсэхээс хамаарч өөрчлөгдөнө...
